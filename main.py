@@ -189,19 +189,22 @@ class commander:
 
         self.workbook.save(self.report_file)
 
-        if prev_sum_value > two_sum_value:
+        prev_diff_value = self.sheet[f"{self.prev_month_col}{self.sum_last_row}"].value
+        two_diff_value = self.sheet[f"{self.two_month_col}{self.sum_last_row}"].value
+
+        if prev_diff_value > two_diff_value:
             word = "増加"
-            if prev_sum_value - two_sum_value >= 20000:
+            if prev_diff_value - two_diff_value >= 20000:
                 word = "大幅に増加"
-        elif prev_sum_value < two_sum_value:
+        elif prev_diff_value < two_diff_value:
             word = "減少"
-            if two_sum_value - prev_sum_value >= 20000:
+            if two_diff_value - prev_diff_value >= 20000:
                 word = "大幅に減少"
-            elif prev_sum_value == 0:
+            elif prev_diff_value == 0:
                 word = "減少（利用なし）"
         else:
             word = "変化なし"
-            if prev_sum_value == 0:
+            if prev_diff_value == 0:
                 word = "変化なし（利用なし）"
 
         max_value = 0
@@ -216,10 +219,10 @@ class commander:
                     max_row_num = row[0].row
 
         if max_row_num:
-            if self.report_file != "./statistics_report/ロビープリンタ印刷統計.xlsx":
+            if self.report_file == "./statistics_report/教室等モノクロプリンタ印刷統計.xlsx" or self.report_file == "./statistics_report/教員カラープリンタ印刷統計.xlsx":
                 place = f"{self.sheet[f'A{max_row_num}'].value} {self.sheet[f'B{max_row_num}'].value}"
             
-            else: # ロビープリンタ印刷統計.xlsxの場合はA,B,C列を取得
+            else: # ロビープリンタ印刷統計.xlsx または Ricohスキャナ統計.xlsx の場合はA,B,C列を取得
                 place = f"{self.sheet[f'A{max_row_num}'].value} {self.sheet[f'B{max_row_num}'].value} {self.sheet[f'C{max_row_num}'].value}"
         else:
             place = "該当なし"
