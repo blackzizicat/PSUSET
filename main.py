@@ -101,10 +101,10 @@ class commander:
                     if host_name in df_utf8["Host Name"].values:
 
                         value = df_utf8[df_utf8["Host Name"] == host_name][self.csv_head].values[0]
+                        self.sheet[f"{self.prev_month_col}{row_idx}"].value = value
                     else:
                         print(f"{host_name} が見つかりませんでした")
 
-                    self.sheet[f"{self.prev_month_col}{row_idx}"].value = value
 
         else: # Ricohスキャナ統計.xlsxの場合
             reference_file = glob.glob("./number_report/機能×カラー別集計レポート*.xlsx")[0]
@@ -120,13 +120,13 @@ class commander:
                         
                         if host_name == reference_host_name:
                             value = reference_sheet[f"{self.excel_head}{row}"].value
+                            self.sheet[f"{self.prev_month_col}{row_idx}"].value = value
                             find = 1
                             break
                             
                     if find == 0:
                         print(f"{host_name} が見つかりませんでした")
 
-                    self.sheet[f"{self.prev_month_col}{row_idx}"].value = value
 
         if prev_month != 4:
             for row_idx in range(3, self.host_last_row + 1):
@@ -172,7 +172,10 @@ class commander:
 
     def gen_text(self):
 
-        prev_sum_value = sum(self.sheet[cell].value for cell in [f"{self.prev_month_col}{i}" for i in range(3, self.host_last_row + 1)])
+        prev_sum_value = sum(
+            self.sheet[cell].value or 0
+            for cell in [f"{self.prev_month_col}{i}" for i in range(3, self.host_last_row + 1)]
+        )
         self.sheet[f"{self.prev_month_col}{self.sum_last_row -1}"].value = prev_sum_value
 
         if prev_month != 4:
