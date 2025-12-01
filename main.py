@@ -104,6 +104,7 @@ class commander:
                         self.sheet[f"{self.prev_month_col}{row_idx}"].value = value
                     else:
                         print(f"{host_name} が見つかりませんでした")
+                        self.sheet[f"{self.prev_month_col}{row_idx}"].value = int(0)
 
 
         else: # Ricohスキャナ統計.xlsxの場合
@@ -126,6 +127,7 @@ class commander:
                             
                     if find == 0:
                         print(f"{host_name} が見つかりませんでした")
+                        self.sheet[f"{self.prev_month_col}{row_idx}"].value = int(0)
 
 
         if prev_month != 4:
@@ -259,19 +261,21 @@ report_text = f"2025年{prev_month}月 利用統計レポート\n\
 新庄です。\n\
 {prev_month}月分の利用統計レポートを作成しましたのでご確認ください。\n\
 ----------\n\
-・プリンタ，スキャナ\n\
-当月は, 教室プリンタは{class_print[0]}，\
-教員室プリンタは，カラーが{teacher_print_color[0]}，白黒が{teacher_print_mono[0]}した。\
-ロビープリンタは{lobby_print[0]}，\
-教室プリンタのスキャナは，カラーが{class_scan_color[0]}，白黒が{class_scan_mono[0]}した。\
-ロビープリンタのスキャナは，カラーが{lobby_scan_color[0]}，白黒が{lobby_scan_mono[0]}した。\n\
-\
+・印刷\n\
+教室は{class_print[0]}，\
+教員室はカラーが{teacher_print_color[0]}，白黒が{teacher_print_mono[0]}，\
+ロビーは{lobby_print[0]}した。\
 特に目立った利用は，\
-教室プリンタ（{class_print[1]}→{class_print[2]}枚），\
-教員室プリンタ（カラー：{teacher_print_color[1]}→{teacher_print_color[2]}枚，白黒：{teacher_print_mono[1]}→{teacher_print_mono[2]}枚），\
-ロビープリンタ（{lobby_print[1]}→{lobby_print[2]}枚），\
-教室プリンタのスキャナ（カラー：{class_scan_color[1]}→{class_scan_color[2]} 枚，白黒: {class_scan_mono[1]} → {class_scan_mono[2]} 枚），\
-ロビープリンタのスキャナ（カラー：{lobby_scan_color[1]}→{lobby_scan_color[2]} 枚，白黒: {lobby_scan_mono[1]} → {lobby_scan_mono[2]} 枚 )だった。\n\
+教室（{class_print[1]}→{class_print[2]}枚），\
+教員室（カラー：{teacher_print_color[1]}→{teacher_print_color[2]}枚，白黒：{teacher_print_mono[1]}→{teacher_print_mono[2]}枚），\
+ロビー（{lobby_print[1]}→{lobby_print[2]}枚）だった。\n\
+\
+・スキャン\n\
+教室はカラーが{class_scan_color[0]}，白黒が{class_scan_mono[0]}，\
+ロビーはカラーが{lobby_scan_color[0]}，白黒が{lobby_scan_mono[0]}した。\
+特に目立った利用は，\
+教室（カラー：{class_scan_color[1]}→{class_scan_color[2]} 枚，白黒: {class_scan_mono[1]} → {class_scan_mono[2]} 枚），\
+ロビー（カラー：{lobby_scan_color[1]}→{lobby_scan_color[2]} 枚，白黒: {lobby_scan_mono[1]} → {lobby_scan_mono[2]} 枚 )だった。\n\
 ----------\n\
 よろしくお願いいたします。"
 
