@@ -1,4 +1,5 @@
-このstatistics_reportフォルダには，利用統計レポートのExcelを置いてください。
+このstatistics_reportフォルダには，
+\\ctsw\center\sd\C2-10_全学部共同設備・オープンパソコンルーム設備\利用統計\2025\プリンタ・スキャナ\ にある利用統計レポートのExcelを置いてください。
 Ricohスキャナ統計.xlsx
 ロビープリンタ印刷統計.xlsx
 教員カラープリンタ印刷統計.xlsx
