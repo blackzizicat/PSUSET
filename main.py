@@ -30,7 +30,7 @@ def excel_handler(report_file, sheet_name=None):
             old_sum_last_row -= 1
 
     # column
-    if report_file != "./statistics_report/教員カラープリンタ印刷統計.xlsx":
+    if report_file != "./report/教員カラープリンタ印刷統計.xlsx":
         month_col = { 4: "E", 5: "F", 6: "G", 7: "H", 8: "I", 9: "J", 10: "K", 11: "L", 12: "M", 1: "N", 2: "O", 3: "P" }
         prev_month_col = month_col[prev_month]
         two_month_col = month_col[two_month_ago]
@@ -45,8 +45,8 @@ def excel_handler(report_file, sheet_name=None):
 
     # header
     excel_head = csv_head = None
-    if report_file != "./statistics_report/教員カラープリンタ印刷統計.xlsx":
-        if report_file != "./statistics_report/Ricohスキャナ統計.xlsx": # ロビープリンタ印刷統計 教室等モノクロプリンタ印刷統計 の場合
+    if report_file != "./report/教員カラープリンタ印刷統計.xlsx":
+        if report_file != "./report/Ricohスキャナ統計.xlsx": # ロビープリンタ印刷統計 教室等モノクロプリンタ印刷統計 の場合
             csv_head = "Printer: B&W"
 
         else: # Ricohスキャナ統計.xlsx の場合
@@ -86,9 +86,9 @@ class commander:
     def fill_in_report(self):
         print(self.report_file)
 
-        if self.report_file != "./statistics_report/Ricohスキャナ統計.xlsx":
+        if self.report_file != "./report/Ricohスキャナ統計.xlsx":
 
-            file = glob.glob("./number_report/最新の機器カウンターレポート*")[0]
+            file = glob.glob("./reference_source/最新の機器カウンターレポート*")[0]
             reference_file = file.replace(".csv", "_utf8.csv")
             df = pd.read_csv(file, encoding="shift_jis", comment="#", skip_blank_lines=True) # コメント行と空白行を無視
             df.to_csv(reference_file, encoding="utf-8", index=False)
@@ -108,7 +108,7 @@ class commander:
 
 
         else: # Ricohスキャナ統計.xlsxの場合
-            reference_file = glob.glob("./number_report/機能×カラー別集計レポート*.xlsx")[0]
+            reference_file = glob.glob("./reference_source/機能×カラー別集計レポート*.xlsx")[0]
             reference_sheet = excel_handler(reference_file)[3]
 
             for row_idx in range(3, self.host_last_row + 1):
@@ -135,7 +135,7 @@ class commander:
 
                 prev_value = self.sheet[f"{self.prev_month_col}{row_idx}"].value
 
-                if self.report_file != "./statistics_report/Ricohスキャナ統計.xlsx":
+                if self.report_file != "./report/Ricohスキャナ統計.xlsx":
 
                     two_value = self.sheet[f"{self.two_month_col}{row_idx}"].value
                     diff_value = (prev_value if prev_value else 0) - (two_value if two_value else 0)
@@ -151,7 +151,7 @@ class commander:
                 
                 prev_value = self.sheet[f"{self.prev_month_col}{row_idx}"].value          
 
-                if self.report_file != "./statistics_report/Ricohスキャナ統計.xlsx":
+                if self.report_file != "./report/Ricohスキャナ統計.xlsx":
                     host_name = self.sheet[f"{self.host_col[1]}{row_idx}"].value
 
                     if host_name in host_row_map:
@@ -185,7 +185,7 @@ class commander:
         else:
             two_sum_value = sum(self.old_sheet[cell].value for cell in [f"{self.two_month_col}{i}" for i in range(3, self.old_host_last_row + 1)])
 
-        if self.report_file != "./statistics_report/Ricohスキャナ統計.xlsx":
+        if self.report_file != "./report/Ricohスキャナ統計.xlsx":
             diff_value = (prev_sum_value if prev_sum_value else 0) - (two_sum_value if two_sum_value else 0)
             self.sheet[f"{self.prev_month_col}{self.sum_last_row}"].value = diff_value
 
@@ -224,7 +224,7 @@ class commander:
                     max_row_num = row[0].row
 
         if max_row_num:
-            if self.report_file == "./statistics_report/教室等モノクロプリンタ印刷統計.xlsx" or self.report_file == "./statistics_report/教員カラープリンタ印刷統計.xlsx":
+            if self.report_file == "./report/教室等モノクロプリンタ印刷統計.xlsx" or self.report_file == "./report/教員カラープリンタ印刷統計.xlsx":
                 place = f"{self.sheet[f'A{max_row_num}'].value} {self.sheet[f'B{max_row_num}'].value}"
             
             else: # ロビープリンタ印刷統計.xlsx または Ricohスキャナ統計.xlsx の場合はA,B,C列を取得
@@ -237,24 +237,24 @@ class commander:
 
 
 # create instance
-commander(*excel_handler("./statistics_report/教室等モノクロプリンタ印刷統計.xlsx", "ALL")).fill_in_report()
-commander(*excel_handler("./statistics_report/教員カラープリンタ印刷統計.xlsx", "カラー")).fill_in_report()
-commander(*excel_handler("./statistics_report/教員カラープリンタ印刷統計.xlsx", "モノクロ")).fill_in_report()
-commander(*excel_handler("./statistics_report/ロビープリンタ印刷統計.xlsx", "ALL")).fill_in_report()
-commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "教室カラー")).fill_in_report()
-commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "教室モノクロ")).fill_in_report()
-commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "ロビーカラー")).fill_in_report()
-commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "ロビーモノクロ")).fill_in_report()
+commander(*excel_handler("./report/教室等モノクロプリンタ印刷統計.xlsx", "ALL")).fill_in_report()
+commander(*excel_handler("./report/教員カラープリンタ印刷統計.xlsx", "カラー")).fill_in_report()
+commander(*excel_handler("./report/教員カラープリンタ印刷統計.xlsx", "モノクロ")).fill_in_report()
+commander(*excel_handler("./report/ロビープリンタ印刷統計.xlsx", "ALL")).fill_in_report()
+commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "教室カラー")).fill_in_report()
+commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "教室モノクロ")).fill_in_report()
+commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "ロビーカラー")).fill_in_report()
+commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "ロビーモノクロ")).fill_in_report()
 
 # create mail report
-class_print = commander(*excel_handler("./statistics_report/教室等モノクロプリンタ印刷統計.xlsx", "ALL")).gen_text()
-teacher_print_color = commander(*excel_handler("./statistics_report/教員カラープリンタ印刷統計.xlsx", "カラー")).gen_text()
-teacher_print_mono = commander(*excel_handler("./statistics_report/教員カラープリンタ印刷統計.xlsx", "モノクロ")).gen_text()
-lobby_print = commander(*excel_handler("./statistics_report/ロビープリンタ印刷統計.xlsx", "ALL")).gen_text()
-class_scan_color = commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "教室カラー")).gen_text()
-class_scan_mono = commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "教室モノクロ")).gen_text()
-lobby_scan_color = commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "ロビーカラー")).gen_text()
-lobby_scan_mono = commander(*excel_handler("./statistics_report/Ricohスキャナ統計.xlsx", "ロビーモノクロ")).gen_text()
+class_print = commander(*excel_handler("./report/教室等モノクロプリンタ印刷統計.xlsx", "ALL")).gen_text()
+teacher_print_color = commander(*excel_handler("./report/教員カラープリンタ印刷統計.xlsx", "カラー")).gen_text()
+teacher_print_mono = commander(*excel_handler("./report/教員カラープリンタ印刷統計.xlsx", "モノクロ")).gen_text()
+lobby_print = commander(*excel_handler("./report/ロビープリンタ印刷統計.xlsx", "ALL")).gen_text()
+class_scan_color = commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "教室カラー")).gen_text()
+class_scan_mono = commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "教室モノクロ")).gen_text()
+lobby_scan_color = commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "ロビーカラー")).gen_text()
+lobby_scan_mono = commander(*excel_handler("./report/Ricohスキャナ統計.xlsx", "ロビーモノクロ")).gen_text()
 
 report_text = f"2025年{prev_month}月 利用統計レポート\n\
 渡邉さん\n\
@@ -274,9 +274,10 @@ report_text = f"2025年{prev_month}月 利用統計レポート\n\
 教室はカラーが{class_scan_color[0]}，白黒が{class_scan_mono[0]}，\
 ロビーはカラーが{lobby_scan_color[0]}，白黒が{lobby_scan_mono[0]}した。\
 特に目立った利用は，\
-教室（カラー：{class_scan_color[1]}→{class_scan_color[2]} 枚，白黒: {class_scan_mono[1]} → {class_scan_mono[2]} 枚），\
-ロビー（カラー：{lobby_scan_color[1]}→{lobby_scan_color[2]} 枚，白黒: {lobby_scan_mono[1]} → {lobby_scan_mono[2]} 枚 )だった。\n\
+教室（カラー：{class_scan_color[1]}→{class_scan_color[2]} 枚，白黒：{class_scan_mono[1]} → {class_scan_mono[2]} 枚），\
+ロビー（カラー：{lobby_scan_color[1]}→{lobby_scan_color[2]} 枚，白黒：{lobby_scan_mono[1]} → {lobby_scan_mono[2]} 枚 )だった。\n\
 ----------\n\
-よろしくお願いいたします。"
+よろしくお願いいたします。\n\
+該当なしは削除，スキャナの機種名は削除"
 
 print(report_text)
